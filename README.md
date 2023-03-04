@@ -49,9 +49,9 @@ in the conda environment directly so they are not forgotten on any subsequent
 runs. After setting the variables, make sure to cycle the environment so the
 variables stick:
 
-    conda env config vars set AWS_ACCESS_KEY_ID=AKIAJUNKSERROREMFEOI
-    conda env config vars set AWS_SECRET_ACCESS_KEY=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
-    conda env config vars set AWS_DEFAULT_REGION=us-west-2
+    conda env config vars set AWS_ACCESS_KEY_ID=
+    conda env config vars set AWS_SECRET_ACCESS_KEY=
+    conda env config vars set AWS_DEFAULT_REGION=
     conda env deactivate
     conda activate codm
 
