@@ -119,14 +119,13 @@ resources:
             - "Ref::bucketname"
             - "Ref::collectname"
             - "Ref::outputname"
-            - "aws:"
           Memory: 64000
           Privileged: true
           Vcpus: 16
           ResourceRequirements:
             - Type: "GPU"
               Value: "1"
-          Image: "${self:custom.accountId}.dkr.ecr.${self:provider.region}.amazonaws.com/${self:service}-${self:provider.stage}-codm:latest"
+          Image: "${AWS::accountId}.dkr.ecr.${self:provider.region}.amazonaws.com/${self:service}-${self:provider.stage}-codm:latest"
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:

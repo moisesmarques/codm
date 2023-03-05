@@ -1,18 +1,18 @@
 #!/bin/bash
 
 #set -e
-echo "Hello , this is CODM docker!"
+nvidia-smi
 
-BUCKET="$4"
-COLLECT="$5"
-OUTPUT="$6"
+# variables to be passed as parameters
+BUCKET=$4
+COLLECT=$5
+OUTPUT=$6
 
 echo "processing collect '$COLLECT' from bucket $BUCKET to $OUTPUT"
 
-cd /code
+cd /local
 
-mkdir /local/images
-ln -s /local/images /code/images
+mkdir -p /local/images
 
 aws s3 sync s3://$BUCKET/$COLLECT/ /local/images --no-progress
 
@@ -21,18 +21,16 @@ aws s3 cp s3://$BUCKET/settings.yaml .
 # try using an overriden settings file
 aws s3 cp s3://$BUCKET/$COLLECT/settings.yaml .  || true
 
-# try copying a boundary
-aws s3 cp s3://$BUCKET/$COLLECT/boundary.json .  || true
+# # try copying a boundary
+# aws s3 cp s3://$BUCKET/$COLLECT/boundary.json .  || true
 
-BOUNDARY="--auto-boundary"
-if test -f "boundary.json"; then
-    BOUNDARY="--boundary boundary.json"
-fi
+# BOUNDARY="--auto-boundary"
 
-#python3 /code/run.py --rerun-all --project-path ..
-python3 /code/run.py --rerun-all $BOUNDARY --project-path .. 2>&1 | tee odm_$COLLECT-process.log
+# if test -f "boundary.json"; then
+#     BOUNDARY="--boundary boundary.json"
+# fi
 
-ls -al
+docker run --rm -v /local:/local --gpus all opendronemap/odm:gpu --project-path /local .
 
 # copy ODM products
 PRODUCTS=$(ls -d odm_* 3d_tile*)
